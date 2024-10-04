@@ -100,7 +100,7 @@ Cas passants :
   - should construct a dragon when given the right type of arguments *entity paramaters and a strictly positive integer for maxCooldown*
 
 Cas d'erreur :
-  - should throw an error when the given arguments for maxCooldown is not a strictly positive integer *here, I made a choice, that when constructing the dragon, it has no gold, so no parameter is needed, and the cooldown cannot be 0, so the special attack is not always available*
+  - should throw an error when the given argument for maxCooldown is not a strictly positive integer *here, I made a choice, that when constructing the dragon, it has no gold, so no parameter is needed, and the cooldown cannot be 0, so the special attack is not always available*
 
 Cas exceptionnels :
   -
@@ -111,7 +111,7 @@ Cas passants :
   - should return an integer between 2 and twice the number of sides of the entity's dice *I decided here that the special Attack will roll two dices, and return the sum, so it can be used as damage*
 
 Cas d'erreur :
-  -
+  - should not execute the special attack when entity's currentCooldown is not at 0
 
 Cas exceptionnels :
   -
@@ -122,6 +122,7 @@ Cas exceptionnels :
 
 Cas passants :
   - should construct a hero when parameters given are of the right type *entity parameters and a strictly positive integer for the gold*
+  - should throw an error when the given argument for gold is not a strictly positive integer
 
 Cas d'erreur :
   -
@@ -145,9 +146,9 @@ Cas exceptionnels :
 ### method start
 
 Cas passants :
-  - should launch a fight where the hero starts attacking, and stop it when one of the opponents is dead. whenever the special attack of the dragon is available, it uses it
+  - should launch a fight where the hero starts attacking
+  - should stop the fight when one of the opponents is dead and the other should still be alive
   - should add gold to the dragon's lair if it won the fight
-  - should stop the game if the dragon has died
 
 Cas d'erreur :
   -
