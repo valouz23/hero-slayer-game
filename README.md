@@ -36,5 +36,15 @@ La classe principale de l’application. Lors d’une exploration (explore), les
 - Faites vous plaisir ! Attention cependant à ne pas délaisser le sujet. Tout ajout de fonctionnalités supplémentaires pourra amener à des points bonus, si le reste du sujet est correctement couvert.
 
 
-# Mes choix pour répondre au sujet
+# Bon à savoir
 - Le langage utilisé est javascript, avec jest pour les tests
+- pour lancer les tests une fois l'installation des packages fait, il suffit de lancer la commande 'npm test'
+
+# Points d'amélioration 
+A l'évidence, je n'ai pas eu le temps de tout implémenter, mais les tests rédigés dans tests.md sont normalement complet, en tout cas autant que j'ai pu prévoir. J'ai aussi inclut à côté de ceux-ci des notes sur les choix que j'ai fait qui m'ont amenés à vouloir rédiger ces tests.
+
+Par ailleurs, il y a quelques points que je n'ai pas eu le temps d'aborder, notamment la protection de certaines données, comme le nom des entités, et leur vie maximale, qui peut être changé alors qu'ils sont censés être fixe. Ce n'est pas par oubli mais par manque de temps, ou d'efficacité de ma part.
+
+Aussi, j'ai très peu commenter mon code, à part des given when then dans mes tests, c'est encore une fois par manque de temps. Après comme la plupart des méthodes étaient données et décrites, ça ne devrait pas trop poser de problèmes de compréhension.
+
+Enfin, je me suis un peu dépêchée sur les tests pour le fight, parce que je voyais l'heure passer, donc ils ne sont peut-être pas complétement bien, c'est le dernier objet sur lequel j'ai travaillé avant de rendre mon travail. Comme je code jusqu'à la dernière minute, je ne sais pas où j'en serais quand je rendrais mon travail
