@@ -1,4 +1,5 @@
 const Dragon = require("./Dragon");
+const Hero = require("./Hero");
 
 class Fight {
     constructor(hero, dragon) {
