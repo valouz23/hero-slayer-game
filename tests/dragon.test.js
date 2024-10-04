@@ -12,7 +12,7 @@ describe('constructor', () => {
         var dragon = new Dragon('Smaug', DRAGON_HP, D20, COOLDOWN);
         // Then
         expect(dragon).toBeInstanceOf(Dragon);
-        expect(dragon.name).toBe('Dragon');
+        expect(dragon.name).toBe('Smaug');
         expect(dragon.currentHealth).toBe(DRAGON_HP);
         expect(dragon.maxHealth).toBe(DRAGON_HP);
         expect(dragon.damage).toBe(D20);
@@ -55,7 +55,17 @@ describe('specialAttack', () => {
         var damage = dragon.specialAttack();
         // Then
         expect(damage).toBeGreaterThanOrEqual(2);
-        expect(damage).toBeLesserThanOrEqual(40);
+        expect(damage).toBeLessThanOrEqual(40);
+    })
+
+    test("should set currentCooldown of dragon back to maxCoolDown", () => {
+        // Given
+        var dragon = new Dragon('Smaug', DRAGON_HP, D20, COOLDOWN);
+        dragon.currentCooldown = 0;
+        // When
+        dragon.specialAttack();
+        // Then
+        expect(dragon.currentCooldown).toBeGreaterThanOrEqual(COOLDOWN);
     })
 
     test("should not execute the special attack when entity's currentCooldown is not at 0", () => {

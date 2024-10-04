@@ -107,7 +107,8 @@ Cas exceptionnels :
 ### method specialAttack :
 
 Cas passants :
-  - should return an integer between 2 and twice the number of sides of the entity's dice *I decided here that the special Attack will roll two dices, and return the sum, so it can be used as damage*
+  - should return an integer between 2 and twice the number of sides of the entity's dice *I decided here that the special Attack will do a simple attack twice, and return the sum, so it can be used as damage*
+  - should set currentCooldown of dragon back to maxCoolDown
 
 Cas d'erreur :
   - should not execute the special attack when entity's currentCooldown is not at 0
@@ -148,6 +149,8 @@ Cas passants :
   - should launch a fight where the hero starts attacking
   - should stop the fight when one of the opponents is dead and the other should still be alive
   - should add gold to the dragon's lair if it won the fight
+  - should increase number of turns when dragon and hero have each attacked once
+  - should decrease currentCooldown of dragon each turn
 
 Cas d'erreur :
   -

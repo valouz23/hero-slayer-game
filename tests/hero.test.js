@@ -10,10 +10,10 @@ describe('constructor', () => {
     test('should construct a hero when parameters given are of the right type', () => {
         // Given
         // When
-        var hero = new Hero('Smaug', HERO_HP, D6, GOLD);
+        var hero = new Hero('Natsu', HERO_HP, D6, GOLD);
         // Then
         expect(hero).toBeInstanceOf(Hero);
-        expect(hero.name).toBe('Hero');
+        expect(hero.name).toBe('Natsu');
         expect(hero.currentHealth).toBe(HERO_HP);
         expect(hero.maxHealth).toBe(HERO_HP);
         expect(hero.damage).toBe(D6);
