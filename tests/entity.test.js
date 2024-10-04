@@ -5,21 +5,22 @@ const DRAGON_HP = 40;
 const D20 = new Dice(20);
 const HERO_HP = 20;
 const D6 = new Dice(6);
-const MAX_HEALTH_POINTS = 100;
+const MAX_DAMAGE_POINTS = 100;
 
 describe('constructor', () => {
-    test('should construct entity when given a string for the name, an integer strictly superior to 1 for the health, and a dive for the damage', () => {
+    test('should construct entity when given a string for the name, an integer strictly superior to 1 for the maxHealth, and a dice for the damage', () => {
         // Given
         // When
         var dragon = new Entity('Dragon', DRAGON_HP, D20);
         // Then
         expect(dragon).toBeInstanceOf(Entity);
         expect(dragon.name).toBe('Dragon');
-        expect(dragon.health).toBe(DRAGON_HP);
+        expect(dragon.currentHealth).toBe(DRAGON_HP);
+        expect(dragon.maxHealth).toBe(DRAGON_HP);
         expect(dragon.damage).toBe(D20);
     });
 
-    test('should throw error when using something else than a string with at least 4 characters for the name', () => {
+    test('should throw error when using something else than a string with at least 3 characters for the name', () => {
         // Given
         const NOT_LONG_STRINGS = [
             'xs',
@@ -42,7 +43,7 @@ describe('constructor', () => {
         })
     })
 
-    test('should throw error when using something else than an integer for the health', () => {
+    test('should throw error when using something else than an integer for the maxHealth', () => {
         // Given
         const NOT_INTEGERS = [
             'blop',
@@ -89,16 +90,20 @@ describe('constructor', () => {
 });
 
 describe('isAlive', () => {
-    test("should return false when entity's health is at zero", () => {
+    test("should return false when entity's health is at zero or below", () => {
         // Given
-        const dragon = new Entity('Dragon', 0, D20);
-        // When Then
-        expect(dragon.isAlive()).toBeFalsy();
+        const RAND_INTEGER_UNDER_0 = -Math.floor(Math.random() * MAX_DAMAGE_POINTS) - 1;
+        const HP_VALUES = [0, -10, -20, -37, -50, -100, RAND_INTEGER_UNDER_0];
+        HP_VALUES.forEach((HP) => {
+            const dragon = new Entity('Dragon', HP, D20);
+            // When Then
+            expect(dragon.isAlive()).toBeFalsy();
+        })
     })
 
     test("should return true when entity's health is strictly superior to zero", () => {
         // Given
-        const RAND_INTEGER_OVER_1 = Math.floor(Math.random() * MAX_HEALTH_POINTS) + 1;
+        const RAND_INTEGER_OVER_1 = Math.floor(Math.random() * MAX_DAMAGE_POINTS) + 1;
         const HP_VALUES = [10, 20, 37, 50, 100, RAND_INTEGER_OVER_1];
         HP_VALUES.forEach((HP) => {
             const dragon = new Entity('Dragon', HP, D20);
@@ -106,21 +111,10 @@ describe('isAlive', () => {
             expect(dragon.isAlive()).toBeTruthy();
         })
     })
-
-    test("should return false when entity's health is strictly below zero", () => {
-        // Given
-        const RAND_INTEGER_UNDER_0 = -Math.floor(Math.random() * MAX_HEALTH_POINTS) - 1;
-        const HP_VALUES = [-10, -20, -37, -50, -100, RAND_INTEGER_UNDER_0];
-        HP_VALUES.forEach((HP) => {
-            const dragon = new Entity('Dragon', HP, D20);
-            // When Then
-            expect(dragon.isAlive()).toBeFalsy();
-        })
-    })
 })
 
 describe('takeDamage', () => {
-    test("should decrease entity's health by damage in parameters when damage is inferior or equal to health", () => {
+    test("should decrease entity's currentHealth by damage in parameters when damage is inferior or equal to currentHealth", () => {
         const RAND_INTEGER_OVER_1 = Math.floor(Math.random() * 39) + 1;
         const DAMAGES = [ 8, 13, 27, 32, RAND_INTEGER_OVER_1];
         DAMAGES.forEach((damage) => {
@@ -130,44 +124,32 @@ describe('takeDamage', () => {
             // When
             dragon.takeDamage(damage);
             // Then
-            expect(dragon.health).toBe(DIFF);
+            expect(dragon.currentHealth).toBe(DIFF);
             // When
             dragon.takeDamage(DIFF);
             // Then
-            expect(dragon.health).toBe(0);
+            expect(dragon.currentHealth).toBe(0);
         });
     })
 
-    test("should set entity health to 0 if damage is strictly superior to health", () => {
+    test("should set entity's currentHealth to 0 if damage is strictly superior to currentHealth", () => {
         // Given
-        const RAND_INTEGER_OVER_1 = Math.floor(Math.random() * MAX_HEALTH_POINTS) + 1;
+        const RAND_INTEGER_OVER_1 = Math.floor(Math.random() * MAX_DAMAGE_POINTS) + 1;
         const DAMAGES = [5, 8, 13, 27, 38, RAND_INTEGER_OVER_1];
         DAMAGES.forEach((damage) => {
             const dragon = new Entity('Dragon', DRAGON_HP, D20);
             // When
             dragon.takeDamage(DRAGON_HP + damage);
             // Then
-            expect(dragon.health).toBe(0);
+            expect(dragon.currentHealth).toBe(0);
         });
     })
 
-    test("should at least take 1 damage", () => {
-        // Given
-        const RAND_INTEGER_OVER_1 = -Math.floor(Math.random() * MAX_HEALTH_POINTS);
-        const DAMAGES = [ 0, -5, -8, -13, -27, -38, RAND_INTEGER_OVER_1];
-        DAMAGES.forEach((damage) => {
-            const dragon = new Entity('Dragon', DRAGON_HP, D20);
-            // When
-            const takingNegativeDamage = () => dragon.takeDamage(damage);
-            // Then
-            expect(takingNegativeDamage).toThrow();
-        });
-    })
-
-    test("should throw an error when parameter given is not integer", () => {
+    test("should throw an error when parameter given is not integer or strictly inferior to 1", () => {
         // Given
         const dragon = new Entity('Dragon', DRAGON_HP, D20);
-        const NOT_INTEGERS = [
+        const RAND_INTEGER_OVER_1 = -Math.floor(Math.random() * MAX_DAMAGE_POINTS);
+        const NOT_STRICTLY_POSITIVE_INTEGERS = [
             'blop',
             3.14,
             ['list', 'of', 'things'],
@@ -178,8 +160,9 @@ describe('takeDamage', () => {
             () => {console.log('this is a function')},
             new Date(),
             NaN,
+            0, -5, -8, -13, -27, -38, RAND_INTEGER_OVER_1,
         ];
-        NOT_INTEGERS.forEach((notAnInteger) => {
+        NOT_STRICTLY_POSITIVE_INTEGERS.forEach((notAnInteger) => {
             // When
             const taking_damage = () => {dragon.takeDamage(notAnInteger)};
             // Then
@@ -202,19 +185,15 @@ describe('attack', () => {
         expect(roll20Spy).not.toHaveBeenCalled();
     })
 
-    test("should call takeDamage on entity passed in parameters, with damage being a value between 1 and number of sides of current entity's dice", () => {
+    test("should return an integer strictly positive", () => {
         // Given
         const target = new Entity('Target', DRAGON_HP, D20);
         const attacker = new Entity('Attacker', HERO_HP, D6);
-        const targetTakesDamageSpy = jest.spyOn(target, 'takeDamage');
-        const attackerTakesDamageSpy = jest.spyOn(attacker, 'takeDamage');
-        const RAND_INTEGER_BETWEEN_1_AND_6 = Math.floor(Math.random() * 5) + 1;
-        jest.spyOn(D6, 'roll').mockReturnValue(RAND_INTEGER_BETWEEN_1_AND_6);
         // When
-        attacker.attack(target);
+        const damage = attacker.attack(target);
         // Then
-        expect(targetTakesDamageSpy).toHaveBeenCalledWith(RAND_INTEGER_BETWEEN_1_AND_6);
-        expect(attackerTakesDamageSpy).not.toHaveBeenCalled();
+        expect(Number.isInteger(damage)).toBeTruthy();
+        expect(damage).toBeGreaterThanOrEqual(1);
     })
 
     test("should not call method with a parameter that is not an entity", () => {
