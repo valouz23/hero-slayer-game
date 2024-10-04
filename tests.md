@@ -72,11 +72,10 @@ Cas passants :
   - should return an integer, strictly positive *If the damage can be 0, then the game could go on forever because nobody would take damage. plus, the dices start from 1 to the number of sides, so it would be weird to take 0 damage*
 
 Cas d'erreur :
-  - should not call method with a parameter that is not an entity
-  - should not call method on entity not alive *It's a choice I made, that the game should work so we never call attack on an entity that is already dead, because I think once an entity dies, the player should know it right away, and attacking it should not be an option anymore*
+  - 
 
 Cas exceptionnels :
-  - should not call method on itself
+  - 
 
 ### method heal :
 
