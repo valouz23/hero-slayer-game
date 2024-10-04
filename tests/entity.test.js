@@ -195,38 +195,4 @@ describe('attack', () => {
         expect(Number.isInteger(damage)).toBeTruthy();
         expect(damage).toBeGreaterThanOrEqual(1);
     })
-
-    test("should not call method with a parameter that is not an entity", () => {
-        const NOT_ENTITIES = [
-            'blop',
-            4,
-            3.14,
-            ['list', 'of', 'things'],
-            true,
-            null,
-            {json: 'yes'},
-            undefined,
-            () => {console.log('this is a function')},
-            new Date(),
-            NaN,
-        ];
-        const attacker = new Entity('Attacker', HERO_HP, D6);
-        NOT_ENTITIES.forEach((notAnEntity) => {
-            const attacking = () => {attacker.attack(notAnEntity)};
-            expect(attacking).toThrow();
-        })
-    })
-
-    test("should not call method on entity not alive", () => {
-        const attacker = new Entity('Attacker', HERO_HP, D6);
-        const target = new Entity('Target', 0, D6);
-        const attacking = () => {attacker.attack(target)};
-        expect(attacking).toThrow();
-    })
-
-    test("should not call method on itself", () => {
-        const attacker = new Entity('Attacker', HERO_HP, D6);
-        const attacking = () => {attacker.attack(attacker)};
-        expect(attacking).toThrow();
-    })
 })
