@@ -1,6 +1,7 @@
 const Fight = require('../Classes/Fight.js');
 const Hero = require('../Classes/Hero.js');
 const Dragon = require('../Classes/Dragon.js');
+const Dice = require('../Classes/Dice.js');
 
 const DRAGON_HP = 40;
 const D20 = new Dice(20);
